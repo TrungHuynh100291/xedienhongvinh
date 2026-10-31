@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Trị Đại Lý Xe Điện Hồng Vinh V2.0 - POS, RBAC & Thuế HKD 01/CNKD</title>
+  <link rel="icon" type="image/png" href="Logo.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #0f172a; --gold: #eab308; --blue: #0284c7; --green: #16a34a; --red: #dc2626; --bg: #f1f5f9; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #0f172a; margin: 0; padding: 0; }
+    .topbar { background: #0f172a; color: #ffd800; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 3px solid #eab308; position: sticky; top: 0; z-index: 1000; }
+    .role-switcher { display: flex; align-items: center; gap: 8px; background: #1e293b; padding: 6px 12px; border-radius: 10px; border: 1px solid #475569; }
+    .nav-tabs { max-width: 1320px; margin: 14px auto 0; padding: 0 16px; display: flex; gap: 8px; overflow-x: auto; }
+    .tab-btn { background: #fff; color: #334155; border: 1.5px solid #cbd5e1; padding: 10px 16px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+    .tab-btn.active { background: #0f172a; color: #ffd800; border-color: #0f172a; }
+    .main-wrap { max-width: 1320px; margin: 14px auto 40px; padding: 0 16px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1.35fr; gap: 16px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .kpi-card { background: #fff; border-radius: 14px; padding: 16px; border-left: 5px solid var(--blue); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .kpi-card span { font-size: 0.78rem; color: #64748b; font-weight: 700; }
+    .kpi-card h2 { margin: 6px 0 2px; font-size: 1.45rem; color: #0f172a; }
+    .card { background: #fff; border-radius: 14px; padding: 18px; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
+    .card h3 { margin-top: 0; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; font-size: 1.02rem; }
+    input, select, textarea { width: 100%; padding: 9px 12px; margin-bottom: 10px; border: 1px solid #94a3b8; border-radius: 8px; font-weight: 600; font-family: inherit; }
+    .btn { padding: 10px 14px; background: #0284c7; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.84rem; }
+    .order-item { border-left: 5px solid #fe2c55; background: #f8fafc; padding: 14px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+    .tax-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 10px; }
+    .tax-table th, .tax-table td { border: 1px solid #cbd5e1; padding: 9px 10px; text-align: left; }
+    .tax-table th { background: #0f172a; color: #ffd800; }
+    @media (max-width: 860px) { .grid-2 { grid-template-columns: 1fr; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printInvoiceArea, #printInvoiceArea * { visibility: visible; }
+      #printInvoiceArea { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR & PHAN QUYEN RBAC 4 CAP -->
+  <div class="topbar">
+    <div>
+      <b style="font-size:1.08rem;">⚡ TRUNG TÂM ĐIỀU HÀNH &amp; KẾ TOÁN THUẾ XE ĐIỆN HỒNG VINH V2.0</b>
+      <div style="font-size:0.75rem; color:#cbd5e1;">CN1: 05 Thủ Khoa Huân (0849.779.039) | CN2: 49 Phạm Ngọc Thạch (0916.610.619)</div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <div class="role-switcher">
+        <span style="font-size:0.76rem; color:#ffd800; font-weight:800;">🔐 Quyền hạn:</span>
+        <select id="rbacRoleSelect" onchange="switchRbacRole(this.value)" style="margin:0; padding:5px 8px; width:auto; background:#0f172a; color:#fff; border-color:#eab308; font-size:0.78rem;">
+          <option value="OWNER">👑 Chủ Đại Lý (Full Quyền &amp; Thuế HKD)</option>
+          <option value="MANAGER">💼 Quản Lý Chi Nhánh (POS &amp; Kho)</option>
+          <option value="SALE_LIVE">🎧 Sale &amp; Livestream (Chốt Đơn &amp; Live)</option>
+          <option value="TECH">🔧 Kỹ Thuật Viên (Bảo Hành &amp; Cứu Hộ)</option>
+        </select>
+      </div>
+      <a href="index.html" target="_blank" style="background:#eab308; color:#0f172a; padding:8px 14px; border-radius:8px; font-weight:800; text-decoration:none; font-size:0.82rem;">👁️ Mở App Khách Hàng</a>
+    </div>
+  </div>
+
+  <!-- THANH CHUYEN TAB THEO PHAN QUYEN -->
+  <div class="nav-tabs">
+    <button type="button" class="tab-btn active" data-tab="tabOrdersPos" onclick="openAdminTab('tabOrdersPos', this)">📦 Đơn Hàng Realtime &amp; Bán Tại Quầy (POS)</button>
+    <button type="button" class="tab-btn" data-tab="tabLiveInventory" id="btnTabLiveInv" onclick="openAdminTab('tabLiveInventory', this)">🔴 Điều Khiển Live &amp; Kho Xe (Đồng Bộ App)</button>
+    <button type="button" class="tab-btn" data-tab="tabWarrantyRescue" onclick="openAdminTab('tabWarrantyRescue', this)">🛡️ Sổ Bảo Hành Điện Tử &amp; Cứu Hộ SOS</button>
+    <button type="button" class="tab-btn" data-tab="tabTaxAccounting" id="btnTabTaxOwner" onclick="openAdminTab('tabTaxAccounting', this)">📊 Doanh Thu &amp; Thuế Hộ Kinh Doanh (01/CNKD)</button>
+  </div>
+
+  <div class="main-wrap">
+
+    <!-- TAB 1: DON HANG REALTIME & BAN TAI QUAY POS -->
+    <div id="tabOrdersPos" class="tab-pane active">
+      <div class="grid-2">
+        <!-- COT TRAI: TAO DON BAN LE / SUA CHUA TAI QUAY -->
+        <div class="card">
+          <h3>🧾 Tạo Đơn Bán Xe / Thay Bình / Sửa Chữa Tại Quầy (POS)</h3>
+          <input type="text" id="posCusName" placeholder="Họ tên khách mua tại tiệm (*)">
+          <input type="tel" id="posCusPhone" placeholder="Số điện thoại khách (Kích hoạt Bảo hành điện tử) (*)">
+          <select id="posBranch">
+            <option value="CN1: 05 Thủ Khoa Huân (0849.779.039)">📍 CN1: 05 Thủ Khoa Huân</option>
+            <option value="CN2: 49 Phạm Ngọc Thạch (0916.610.619)">📍 CN2: 49 Phạm Ngọc Thạch</option>
+          </select>
+          <select id="posTaxCategory" onchange="updatePosTaxHint()">
+            <option value="GOODS_15">🛵 Bán Xe Điện / Bình Ắc Quy / Phụ Tùng (Thuế HKD Hàng Hóa 1.5%)</option>
+            <option value="SERVICE_7">🔧 Dịch Vụ Sửa Chữa / Bảo Dưỡng / Cứu Hộ (Thuế HKD Dịch Vụ 7.0%)</option>
+          </select>
+          <input type="text" id="posItemName" placeholder="Tên mẫu xe hoặc nội dung thay bình/sửa chữa (*)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <input type="number" id="posGoodsPrice" placeholder="Tiền hàng/xe chịu thuế (đ)">
+            <input type="number" id="posPassThroughFee" placeholder="Thu hộ đăng ký biển/ship (0% thuế)">
+          </div>
+          <select id="posPayMethod">
+            <option value="Tiền mặt tại quầy">💵 Tiền mặt tại quầy</option>
+            <option value="Chuyển khoản VietQR">🏦 Chuyển khoản ngân hàng (VietQR)</option>
+            <option value="Trả góp qua Công ty Tài chính">💳 Giải ngân Trả góp</option>
+          </select>
+          <div id="posTaxHintBox" style="font-size:0.78rem; background:#f0fdf4; color:#166534; padding:8px; border-radius:8px; margin-bottom:10px; font-weight:700;">
+            💡 Phân loại thuế HKD: Ngành Phân phối hàng hóa (GTGT 1.0% + TNCN 0.5% = 1.5%). Khoản thu hộ biển số/ship được tách riêng 0% thuế.
+          </div>
+          <button type="button" class="btn" style="width:100%; background:#16a34a;" onclick="createCounterPosOrder()">✅ Lưu Đơn Hàng &amp; Kích Hoạt Bảo Hành Điện Tử</button>
+        </div>
+
+        <!-- COT PHAI: DANH SACH DON HANG DONG BO TU APP KHACH HANG -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+            <h3 style="margin:0; border:none;">📦 Đơn Khách Đặt Từ App &amp; Tại Quầy (<span id="totalOrderCountBadge">0</span>)</h3>
+            <select id="filterOrderBranch" onchange="renderAdminOrders()" style="width:auto; margin:0; padding:6px 10px; font-size:0.78rem;">
+              <option value="ALL">Tất cả Chi nhánh</option>
+              <option value="CN1">Chi nhánh 1 (05 Thủ Khoa Huân)</option>
+              <option value="CN2">Chi nhánh 2 (49 Phạm Ngọc Thạch)</option>
+            </select>
+          </div>
+          <div id="ordersListBox" style="max-height:620px; overflow-y:auto;">Đang kết nối dữ liệu thời gian thực...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: DIEU KHIEN LIVESTREAM, VOUCHER & KHO XE -->
+    <div id="tabLiveInventory" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <h3>🔴 Điều Khiển Trạm Livestream TikTok &amp; Thông Báo Toàn App</h3>
+          <label style="font-size:0.78rem; font-weight:700;">Trạng thái Phiên Live trên App Khách:</label>
+          <select id="cfgIsLive">
+            <option value="true">🔴 ĐANG PHÁT TRỰC TIẾP SĂN SALE (Bật hiệu ứng rung)</option>
+            <option value="false">⏳ TẠM NGHỈ - Đếm ngược chờ khung giờ tiếp theo</option>
+          </select>
+          <label style="font-size:0.78rem; font-weight:700;">Kênh TikTok Mặc định khi khách mở App:</label>
+          <input type="text" id="cfgChannelHandle" value="yadeavietnam" placeholder="VD: yadeavietnam hoặc dkbike.official">
+          <label style="font-size:0.78rem; font-weight:700;">Tiêu đề Phiên Live Săn Sale:</label>
+          <input type="text" id="cfgLiveTitle" value="Săn Deal Giảm Giá Xe Điện Theo Khung Giờ Cố Định Hằng Ngày">
+          <label style="font-size:0.78rem; font-weight:700;">Khung giờ cố định hiển thị trên App:</label>
+          <input type="text" id="cfgLiveSchedule" value="11:30 - 13:30 & 19:30 - 21:30">
+          <label style="font-size:0.78rem; font-weight:700;">Thanh chữ chạy thông báo ưu đãi đầu trang (Marquee):</label>
+          <input type="text" id="cfgBroadcastBanner" value="🔥 ĐẠI LÝ HỒNG VINH PHAN THIẾT: TRỢ GIÁ ĐỔI XE CŨ LẤY XE ĐIỆN MỚI LÊN ĐẾN 3.000.000Đ — TRẢ GÓP 0Đ LẤY XE NGAY!">
+          <button type="button" class="btn" onclick="saveLiveConfig()" style="width:100%; background:#fe2c55;">💾 Đồng Bộ Ngay Sang App Khách Hàng</button>
+        </div>
+
+        <div class="card">
+          <h3>➕ Thêm Mẫu Xe Mới Hoặc Điều Chỉnh Giá / Tồn Kho Trên App</h3>
+          <input type="text" id="newVehName" placeholder="Tên mẫu xe (VD: YADEA Vekoo / DK Roma SX)...">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <select id="newVehBrand">
+              <option value="YADEA">⚡ Xe Máy Điện YADEA</option>
+              <option value="DKBIKE">🔵 Xe Máy Điện DK Bike</option>
+              <option value="EBICYCLE">🚲 Xe Đạp Điện Học Sinh</option>
+              <option value="BATTERY">🔋 Thay Bình Ắc Quy</option>
+            </select>
+            <select id="newVehPersona">
+              <option value="student">🎓 Học sinh (Không bằng lái)</option>
+              <option value="lady">👩 Nữ đi làm / Đi chợ</option>
+              <option value="sport">💪 Nam dáng thể thao</option>
+              <option value="battery">🔋 Bảo dưỡng / Thay bình</option>
+            </select>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 0.8fr; gap:8px;">
+            <input type="number" id="newVehOldPrice" placeholder="Giá gốc (VD: 19500000)">
+            <input type="number" id="newVehLivePrice" placeholder="Giá Live (VD: 17500000)">
+            <input type="number" id="newVehStock" placeholder="Số xe còn (VD: 2)" value="2">
+          </div>
+          <input type="text" id="newVehMotor" placeholder="Động cơ (VD: Động cơ TTFAR 1200W chống nước IPX7)">
+          <input type="text" id="newVehBattery" placeholder="Ắc quy/Pin (VD: Graphene 60V-22Ah chính hãng)">
+          <input type="text" id="newVehRange" placeholder="Quãng đường 1 lần sạc (VD: 85 km / 1 lần sạc)">
+          <button type="button" class="btn" onclick="addNewVehicle()" style="width:100%; background:#16a34a;">➕ Đăng Mẫu Xe Lên Showroom Ngay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SO BAO HANH DIEN TU & CUU HO SOS -->
+    <div id="tabWarrantyRescue" class="tab-pane">
+      <div class="card">
+        <h3>🛡️ Quản Lý Sổ Bảo Hành Điện Tử &amp; Lịch Cứu Hộ Thay Bình Tận Nơi</h3>
+        <p style="font-size:0.82rem; color:#475569;">Khi kỹ thuật viên bấm <b>"Kích Hoạt Bảo Hành 24 Tháng"</b>, khách hàng tra cứu SĐT trên App sẽ thấy ngay Chứng nhận Bảo hành Điện tử chính hãng của Đại lý Hồng Vinh.</p>
+        <div id="warrantyOrdersBox"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: BAO CAO DOANH THU & THUE HO KINH DOANH (CHI CHU DAI LY OWNER) -->
+    <div id="tabTaxAccounting" class="tab-pane">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="border-left-color:#0284c7;">
+          <span>TỔNG DOANH THU BÁN HÀNG &amp; DỊCH VỤ</span>
+          <h2 id="kpiTotalRev">0đ</h2>
+          <small style="color:#64748b;">Đã trừ khoản thu hộ không chịu thuế</small>
+        </div>
+        <div class="kpi-card" style="border-left-color:#16a34a;">
+          <span>NHÓM 1: BÁN XE &amp; BÌNH ẮC QUY (THUẾ 1.5%)</span>
+          <h2 id="kpiGoodsRev">0đ</h2>
+          <small id="kpiGoodsTaxAmt" style="color:#16a34a; font-weight:800;">Thuế GTGT (1%) + TNCN (0.5%): 0đ</small>
+        </div>
+        <div class="kpi-card" style="border-left-color:#eab308;">
+          <span>NHÓM 2: CÔNG SỬA CHỮA &amp; CỨU HỘ (THUẾ 7.0%)</span>
+          <h2 id="kpiServiceRev">0đ</h2>
+          <small id="kpiServiceTaxAmt" style="color:#b45309; font-weight:800;">Thuế GTGT (5%) + TNCN (2%): 0đ</small>
+        </div>
+        <div class="kpi-card" style="border-left-color:#dc2626;">
+          <span>TỔNG THUẾ HỘ KINH DOANH PHẢI NỘP</span>
+          <h2 id="kpiTotalTaxPayable" style="color:#dc2626;">0đ</h2>
+          <small id="kpiPassThroughExcluded" style="color:#64748b;">Thu hộ tách riêng (0% thuế): 0đ</small>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <h3 style="margin:0; border:none;">📑 Bảng Kê Thuế Hộ Kinh Doanh Cá Thể (Mẫu 01/CNKD - TT 40/2021/TT-BTC)</h3>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn" style="background:#16a34a;" onclick="exportHouseholdBookCSV()">📥 Xuất Sổ Doanh Thu S1-HKD (Excel CSV)</button>
+            <button type="button" class="btn" style="background:#dc2626;" onclick="exportHTKK01CNKDXml()">📥 Xuất XML Tờ Khai 01/CNKD (Chuẩn HTKK)</button>
+          </div>
+        </div>
+
+        <table class="tax-table">
+          <thead>
+            <tr>
+              <th>Nhóm Ngành Nghề (Mẫu 01/CNKD)</th>
+              <th>Mã Chỉ Tiêu</th>
+              <th>Doanh Thu Tính Thuế</th>
+              <th>Thuế GTGT</th>
+              <th>Thuế TNCN</th>
+              <th>Tổng Thuế Phải Nộp</th>
+            </tr>
+          </thead>
+          <tbody id="taxSummaryTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VUNG IN PHIEU BAN HANG & BAO HANH -->
+  <div id="printInvoiceArea" style="display:none; padding:20px; font-family:monospace;"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, push, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyB7CH4HUqEozclN38P_iGtSFzDB_w7sOUk", authDomain: "hy-chay.firebaseapp.com", projectId: "hy-chay", storageBucket: "hy-chay.firebasestorage.app", messagingSenderId: "215026977682", appId: "1:215026977682:web:52b136c7f09a62cc488f4b" };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app, "https://hy-chay-default-rtdb.asia-southeast1.firebasedatabase.app");
+
+    const ROLE_PINS = { OWNER: "8888", MANAGER: "1111", SALE_LIVE: "2222", TECH: "3333" };
+    let currentRole = "OWNER";
+    let allOrdersMap = {};
+    let knownOrderKeys = new Set();
+    let isFirstLoad = true;
+
+    // PHAT AM THANH & DOC GIONG NOI TIENG VIET KHI CO DON MOI TU APP
+    function speakNewOrderAlert(order) {
+      try {
+        if ('speechSynthesis' in window) {
+          const msg = new SpeechSynthesisUtterance(`Đại lý Hồng Vinh có đơn mới! Khách hàng ${order.customerName} đặt ${order.vehicleName}, tổng tiền ${(order.finalPrice || 0).toLocaleString()} đồng.`);
+          msg.lang = 'vi-VN';
+          msg.rate = 1.05;
+          window.speechSynthesis.speak(msg);
+        }
+      } catch (e) {}
+    }
+
+    // PHAN QUYEN RBAC 4 CAP
+    window.switchRbacRole = function(newRole) {
+      if (newRole === "OWNER") {
+        const pin = prompt("🔐 Nhập mã PIN Chủ Đại Lý (Mặc định: 8888):", "8888");
+        if (pin !== ROLE_PINS.OWNER) {
+          alert("❌ Sai mã PIN Chủ Đại Lý!");
+          document.getElementById('rbacRoleSelect').value = currentRole;
+          return;
+        }
+      }
+      currentRole = newRole;
+      const btnTax = document.getElementById('btnTabTaxOwner');
+      const btnLive = document.getElementById('btnTabLiveInv');
+      if (btnTax) btnTax.style.display = (currentRole === 'OWNER') ? 'inline-block' : 'none';
+      if (btnLive) btnLive.style.display = (currentRole === 'TECH') ? 'none' : 'inline-block';
+      if (currentRole === 'TECH') {
+        window.openAdminTab('tabWarrantyRescue', document.querySelector('[data-tab="tabWarrantyRescue"]'));
+      } else {
+        window.openAdminTab('tabOrdersPos', document.querySelector('[data-tab="tabOrdersPos"]'));
+      }
+      window.renderAdminOrders();
+    };
+
+    window.openAdminTab = function(tabId, btn) {
+      if (tabId === 'tabTaxAccounting' && currentRole !== 'OWNER') {
+        return alert("🔒 Chỉ Chủ Đại Lý (OWNER) mới có quyền truy cập Báo cáo Doanh thu & Sổ Thuế Hộ Kinh Doanh!");
+      }
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId)?.classList.add('active');
+      if (btn) btn.classList.add('active');
+    };
+
+    window.updatePosTaxHint = function() {
+      const cat = document.getElementById('posTaxCategory').value;
+      const box = document.getElementById('posTaxHintBox');
+      if (cat === 'GOODS_15') {
+        box.innerHTML = '💡 Phân loại thuế HKD: <b>Phân phối, cung cấp hàng hóa (GTGT 1.0% + TNCN 0.5% = 1.5%)</b>.';
+      } else {
+        box.innerHTML = '💡 Phân loại thuế HKD: <b>Dịch vụ sửa chữa, bảo dưỡng không bao thầu NVL (GTGT 5.0% + TNCN 2.0% = 7.0%)</b>.';
+      }
+    };
+
+    window.createCounterPosOrder = function() {
+      const name = document.getElementById('posCusName').value.trim();
+      const phone = document.getElementById('posCusPhone').value.trim();
+      const branch = document.getElementById('posBranch').value;
+      const taxCat = document.getElementById('posTaxCategory').value;
+      const itemName = document.getElementById('posItemName').value.trim();
+      const price = parseInt(document.getElementById('posGoodsPrice').value || '0');
+      const passFee = parseInt(document.getElementById('posPassThroughFee').value || '0');
+      const payMethod = document.getElementById('posPayMethod').value;
+
+      if (!name || !phone || !itemName || price <= 0) {
+        return alert("Vui lòng nhập đầy đủ Tên khách, SĐT, Tên xe/Dịch vụ và Số tiền!");
+      }
+
+      const payload = {
+        orderCode: 'POS' + Date.now().toString().slice(-6),
+        customerName: name,
+        phone: phone,
+        vehicleId: 'pos_direct',
+        vehicleName: itemName,
+        color: 'Tại quầy',
+        finalPrice: price,
+        passThroughFee: passFee,
+        taxCategory: taxCat,
+        voucherCode: 'BÁN TẠI QUẦY POS',
+        branch: branch,
+        payType: payMethod,
+        status: 'Đã hoàn tất & Kích hoạt BH',
+        warrantyStatus: `Đang bảo hành chính hãng (Kích hoạt ngày ${new Date().toLocaleDateString('vi-VN')})`,
+        createdAt: new Date().toISOString()
+      };
+
+      push(ref(db, 'hong_vinh_ev/orders'), payload).then(() => {
+        alert(`✅ Đã lưu đơn POS (${payload.orderCode}) và kích hoạt Sổ Bảo Hành Điện Tử cho SĐT ${phone}!`);
+        document.getElementById('posCusName').value = '';
+        document.getElementById('posCusPhone').value = '';
+        document.getElementById('posItemName').value = '';
+        document.getElementById('posGoodsPrice').value = '';
+        document.getElementById('posPassThroughFee').value = '';
+      });
+    };
+
+    window.saveLiveConfig = function() {
+      set(ref(db, 'hong_vinh_ev/live_config'), {
+        isLive: document.getElementById('cfgIsLive').value === 'true',
+        currentChannel: document.getElementById('cfgChannelHandle').value.trim() || 'yadeavietnam',
+        title: document.getElementById('cfgLiveTitle').value.trim(),
+        scheduleText: document.getElementById('cfgLiveSchedule').value.trim(),
+        broadcastBanner: document.getElementById('cfgBroadcastBanner').value.trim(),
+        updatedAt: new Date().toISOString()
+      }).then(() => alert("✅ Đã đồng bộ Trạng thái Livestream & Banner thông báo sang App Khách Hàng!"));
+    };
+
+    window.addNewVehicle = function() {
+      const name = document.getElementById('newVehName').value.trim();
+      const brand = document.getElementById('newVehBrand').value;
+      const persona = document.getElementById('newVehPersona').value;
+      const oldPrice = parseInt(document.getElementById('newVehOldPrice').value || '0');
+      const livePrice = parseInt(document.getElementById('newVehLivePrice').value || '0');
+      const stockLeft = parseInt(document.getElementById('newVehStock').value || '2');
+      if (!name || !livePrice) return alert("Vui lòng nhập Tên mẫu xe và Giá bán!");
+      push(ref(db, 'hong_vinh_ev/custom_vehicles'), {
+        id: 'veh_' + Date.now(),
+        brand, persona, name, oldPrice: oldPrice || (livePrice + 1500000), livePrice, stockLeft,
+        image: 'Logo.jpg',
+        motor: document.getElementById('newVehMotor').value.trim() || 'Động cơ chính hãng 1200W',
+        battery: document.getElementById('newVehBattery').value.trim() || 'Ắc quy 60V-20Ah chính hãng',
+        range: document.getElementById('newVehRange').value.trim() || '80 km / 1 lần sạc',
+        maxSpeed: '50 km/h', charging: '6 - 8 giờ', brakes: 'Phanh đĩa an toàn',
+        warranty: 'Bảo hành 24 tháng tại Hồng Vinh'
+      }).then(() => alert(`✅ Đã đăng mẫu xe "${name}" lên Showroom App Khách Hàng!`));
+    };
+
+    window.updateOrderStatus = function(key, newStatus) {
+      const updates = { status: newStatus };
+      if (newStatus.includes('Đã hoàn tất')) {
+        updates.warrantyStatus = `Bảo hành chính hãng 24T (Kích hoạt ${new Date().toLocaleDateString('vi-VN')})`;
+      }
+      update(ref(db, `hong_vinh_ev/orders/${key}`), updates);
+    };
+
+    window.printOrderReceipt = function(key) {
+      const o = allOrdersMap[key];
+      if (!o) return;
+      const area = document.getElementById('printInvoiceArea');
+      area.style.display = 'block';
+      area.innerHTML = `
+        <h2 style="text-align:center; margin:0;">ĐẠI LÝ XE ĐIỆN - XE ĐẠP HỒNG VINH</h2>
+        <p style="text-align:center; margin:4px 0;">CN1: 05 Thủ Khoa Huân (0849.779.039) | CN2: 49 Phạm Ngọc Thạch (0916.610.619)</p>
+        <hr>
+        <h3 style="text-align:center;">PHIẾU BÁN HÀNG &amp; CHỨNG NHẬN BẢO HÀNH</h3>
+        <p><b>Mã phiếu:</b> ${o.orderCode || key.slice(-6)} | <b>Ngày:</b> ${new Date(o.createdAt).toLocaleString('vi-VN')}</p>
+        <p><b>Khách hàng:</b> ${o.customerName} — <b>SĐT:</b> ${o.phone}</p>
+        <p><b>Sản phẩm / Dịch vụ:</b> ${o.vehicleName} (Màu: ${o.color})</p>
+        <p><b>Quà tặng / Phụ kiện kèm:</b> ${o.addons || 'Tiêu chuẩn'}</p>
+        <p><b>Thành tiền:</b> ${(o.finalPrice || 0).toLocaleString()}đ | <b>Thu hộ:</b> ${(o.passThroughFee || 0).toLocaleString()}đ</p>
+        <p><b>Bảo hành:</b> ${o.warrantyStatus || 'Bảo hành chính hãng tại Hồng Vinh'}</p>
+        <hr>
+        <p style="text-align:center; font-size:0.85rem;">Cảm ơn Quý khách đã tin chọn Đại lý Xe Điện Hồng Vinh Phan Thiết!</p>
+      `;
+      window.print();
+      area.style.display = 'none';
+    };
+
+    onValue(ref(db, 'hong_vinh_ev/orders'), (snap) => {
+      allOrdersMap = snap.val() || {};
+      const keys = Object.keys(allOrdersMap);
+      if (!isFirstLoad) {
+        keys.forEach(k => {
+          if (!knownOrderKeys.has(k)) {
+            speakNewOrderAlert(allOrdersMap[k]);
+          }
+        });
+      }
+      knownOrderKeys = new Set(keys);
+      isFirstLoad = false;
+      window.renderAdminOrders();
+      renderTaxAccountingDashboard();
+    });
+
+    window.renderAdminOrders = function() {
+      const branchFilter = document.getElementById('filterOrderBranch')?.value || 'ALL';
+      const keys = Object.keys(allOrdersMap).sort((a, b) => new Date(allOrdersMap[b].createdAt) - new Date(allOrdersMap[a].createdAt));
+      document.getElementById('totalOrderCountBadge').innerText = keys.length;
+
+      const filteredKeys = keys.filter(k => {
+        if (branchFilter === 'ALL') return true;
+        return (allOrdersMap[k].branch || '').includes(branchFilter);
+      });
+
+      const box = document.getElementById('ordersListBox');
+      const wBox = document.getElementById('warrantyOrdersBox');
+      if (filteredKeys.length === 0) {
+        box.innerHTML = '<p style="color:#64748b;">Chưa có đơn hàng nào trong danh mục này.</p>';
+        if (wBox) wBox.innerHTML = '<p style="color:#64748b;">Chưa có dữ liệu bảo hành.</p>';
+        return;
+      }
+
+      const htmlList = filteredKeys.map(k => {
+        const o = allOrdersMap[k];
+        const isCompleted = (o.status || '').includes('Đã hoàn tất');
+        return `
+          <div class="order-item" style="border-left-color:${isCompleted ? '#16a34a' : '#fe2c55'};">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; font-weight:800;">
+              <span style="color:#0284c7;">[${o.orderCode || 'HV'}] 🛵 ${o.vehicleName} (${o.color})</span>
+              <span style="color:#dc2626; font-size:1.02rem;">${(o.finalPrice || 0).toLocaleString()}đ</span>
+            </div>
+            <div style="font-size:0.82rem; margin-top:5px; line-height:1.45;">
+              👤 Khách: <b>${o.customerName}</b> — 📞 <a href="tel:${o.phone}" style="font-weight:900; color:#16a34a;">${o.phone}</a><br>
+              🎟️ Ưu đãi: <b>${o.voucherCode}</b> ${o.addons ? `| 🎁 ${o.addons}` : ''}<br>
+              📍 ${o.branch} | 💳 ${o.payType} | 🕒 ${new Date(o.createdAt).toLocaleString('vi-VN')}<br>
+              🛡️ Bảo hành: <b style="color:#b45309;">${o.warrantyStatus || 'Chưa kích hoạt'}</b>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+              <button type="button" class="btn" style="padding:6px 10px; font-size:0.75rem; background:#0284c7;" onclick="updateOrderStatus('${k}', 'Đã xác nhận giữ xe')">👍 Xác nhận giữ xe</button>
+              <button type="button" class="btn" style="padding:6px 10px; font-size:0.75rem; background:#16a34a;" onclick="updateOrderStatus('${k}', 'Đã hoàn tất & Kích hoạt BH')">✅ Đã giao &amp; Kích hoạt BH</button>
+              <button type="button" class="btn" style="padding:6px 10px; font-size:0.75rem; background:#334155;" onclick="printOrderReceipt('${k}')">🖨️ In Phiếu &amp; BH</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      box.innerHTML = htmlList;
+      if (wBox) wBox.innerHTML = htmlList;
+    };
+
+    // TINH TOAN THUE HO KINH DOANH CA THE (MAU 01/CNKD - TT 40/2021/TT-BTC)
+    function renderTaxAccountingDashboard() {
+      const orders = Object.values(allOrdersMap).filter(o => !(o.status || '').includes('Hủy'));
+      let goodsRev = 0;
+      let serviceRev = 0;
+      let passThroughTotal = 0;
+
+      orders.forEach(o => {
+        const amt = Number(o.finalPrice || 0);
+        const srv = Number(o.serviceFee || 0);
+        const pass = Number(o.passThroughFee || 0);
+        passThroughTotal += pass;
+        if (o.taxCategory === 'SERVICE_7') {
+          serviceRev += (amt + srv);
+        } else {
+          goodsRev += amt;
+          serviceRev += srv;
+        }
+      });
+
+      const goodsVat = Math.round(goodsRev * 0.01);
+      const goodsPit = Math.round(goodsRev * 0.005);
+      const goodsTaxTotal = goodsVat + goodsPit;
+
+      const serviceVat = Math.round(serviceRev * 0.05);
+      const servicePit = Math.round(serviceRev * 0.02);
+      const serviceTaxTotal = serviceVat + servicePit;
+
+      const totalRev = goodsRev + serviceRev;
+      const totalTax = goodsTaxTotal + serviceTaxTotal;
+
+      document.getElementById('kpiTotalRev').innerText = totalRev.toLocaleString() + 'đ';
+      document.getElementById('kpiGoodsRev').innerText = goodsRev.toLocaleString() + 'đ';
+      document.getElementById('kpiGoodsTaxAmt').innerText = `Thuế GTGT (1%) + TNCN (0.5%): ${goodsTaxTotal.toLocaleString()}đ`;
+      document.getElementById('kpiServiceRev').innerText = serviceRev.toLocaleString() + 'đ';
+      document.getElementById('kpiServiceTaxAmt').innerText = `Thuế GTGT (5%) + TNCN (2%): ${serviceTaxTotal.toLocaleString()}đ`;
+      document.getElementById('kpiTotalTaxPayable').innerText = totalTax.toLocaleString() + 'đ';
+      document.getElementById('kpiPassThroughExcluded').innerText = `Thu hộ tách riêng (0% thuế): ${passThroughTotal.toLocaleString()}đ`;
+
+      const tbody = document.getElementById('taxSummaryTableBody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td><b>1. Phân phối, cung cấp hàng hóa</b> (Bán xe máy điện, xe đạp điện, bình ắc quy)</td>
+            <td>[28]</td>
+            <td><b>${goodsRev.toLocaleString()}đ</b></td>
+            <td>${goodsVat.toLocaleString()}đ (1.0%)</td>
+            <td>${goodsPit.toLocaleString()}đ (0.5%)</td>
+            <td><b style="color:#16a34a;">${goodsTaxTotal.toLocaleString()}đ</b></td>
+          </tr>
+          <tr>
+            <td><b>2. Dịch vụ, xây dựng không bao thầu NVL</b> (Công sửa chữa, bảo dưỡng, cứu hộ)</td>
+            <td>[29]</td>
+            <td><b>${serviceRev.toLocaleString()}đ</b></td>
+            <td>${serviceVat.toLocaleString()}đ (5.0%)</td>
+            <td>${servicePit.toLocaleString()}đ (2.0%)</td>
+            <td><b style="color:#b45309;">${serviceTaxTotal.toLocaleString()}đ</b></td>
+          </tr>
+          <tr style="background:#fef2f2; font-weight:900;">
+            <td>TỔNG CỘNG PHẢI NỘP TỜ KHAI 01/CNKD</td>
+            <td>[32]</td>
+            <td>${totalRev.toLocaleString()}đ</td>
+            <td>${(goodsVat + serviceVat).toLocaleString()}đ</td>
+            <td>${(goodsPit + servicePit).toLocaleString()}đ</td>
+            <td style="color:#dc2626; font-size:1rem;">${totalTax.toLocaleString()}đ</td>
+          </tr>
+        `;
+      }
+    }
+
+    // XUAT SO DOANH THU S1-HKD (EXCEL CSV)
+    window.exportHouseholdBookCSV = function() {
+      const orders = Object.values(allOrdersMap);
+      let csv = "\uFEFFMã Đơn,Ngày Giờ,Khách Hàng,SĐT,Sản Phẩm/Dịch Vụ,Nhóm Thuế HKD,Doanh Thu Chịu Thuế,Thu Hộ (0%),Chi Nhánh\n";
+      orders.forEach(o => {
+        const catLabel = o.taxCategory === 'SERVICE_7' ? 'Dịch vụ (7%)' : 'Hàng hóa (1.5%)';
+        csv += `"${o.orderCode || 'HV'}","${new Date(o.createdAt).toLocaleString('vi-VN')}","${o.customerName}","${o.phone}","${o.vehicleName}","${catLabel}",${o.finalPrice || 0},${o.passThroughFee || 0},"${o.branch}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `So_Doanh_Thu_S1_HKD_HongVinh_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    };
+
+    // XUAT XML TO KHAI 01/CNKD CHUAN HTKK
+    window.exportHTKK01CNKDXml = function() {
+      const orders = Object.values(allOrdersMap).filter(o => !(o.status || '').includes('Hủy'));
+      let goodsRev = 0, serviceRev = 0;
+      orders.forEach(o => {
+        if (o.taxCategory === 'SERVICE_7') serviceRev += Number(o.finalPrice || 0) + Number(o.serviceFee || 0);
+        else goodsRev += Number(o.finalPrice || 0);
+      });
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<HSoThueDTu>
+  <HSoKhaiThue>
+    <TTinChung>
+      <TTinTKhaiThue>
+        <TKhaiThue>
+          <maTKhai>01/CNKD</maTKhai>
+          <tenTKhai>Tờ khai thuế đối với hộ kinh doanh, cá nhân kinh doanh (TT40/2021)</tenTKhai>
+        </TKhaiThue>
+        <NNT>
+          <tenNNT>HỘ KINH DOANH ĐẠI LÝ XE ĐIỆN HỒNG VINH</tenNNT>
+          <dchiNNT>05 Thủ Khoa Huân &amp; 49 Phạm Ngọc Thạch, P. Phan Thiết, Tỉnh Lâm Đồng</dchiNNT>
+          <dthoaiNNT>0849779039</dthoaiNNT>
+        </NNT>
+      </TTinTKhaiThue>
+    </TTinChung>
+    <CTieuTKhaiChinh>
+      <PhanPhoiHangHoa_28>
+        <doanhThuGTGT>${goodsRev}</doanhThuGTGT>
+        <thueGTGT>${Math.round(goodsRev * 0.01)}</thueGTGT>
+        <doanhThuTNCN>${goodsRev}</doanhThuTNCN>
+        <thueTNCN>${Math.round(goodsRev * 0.005)}</thueTNCN>
+      </PhanPhoiHangHoa_28>
+      <DichVuSuaChua_29>
+        <doanhThuGTGT>${serviceRev}</doanhThuGTGT>
+        <thueGTGT>${Math.round(serviceRev * 0.05)}</thueGTGT>
+        <doanhThuTNCN>${serviceRev}</doanhThuTNCN>
+        <thueTNCN>${Math.round(serviceRev * 0.02)}</thueTNCN>
+      </DichVuSuaChua_29>
+    </CTieuTKhaiChinh>
+  </HSoKhaiThue>
+</HSoThueDTu>`;
+      const blob = new Blob([xml], { type: 'application/xml;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `To_Khai_01_CNKD_HTKK_HongVinh_${new Date().toISOString().slice(0,10)}.xml`;
+      a.click();
+    };
+  </script>
+</body>
+</html>

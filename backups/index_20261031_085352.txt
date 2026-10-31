@@ -1,0 +1,612 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Xe Điện Hồng Vinh Phan Thiết - Đại Lý YADEA & DK Bike Chính Hãng</title>
+  <meta name="theme-color" content="#0f172a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #0f172a; --brand-gold: #eab308; --yadea-orange: #ea580c; --dk-blue: #0284c7; --live-pink: #fe2c55; --success: #16a34a; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; max-width: 100vw; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #0f172a; line-height: 1.5; padding-bottom: 85px; max-width: 100vw; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* TOPBAR DAI LY HONG VINH */
+    .topbar { background: linear-gradient(90deg, #0f172a, #1e293b); color: #fff; padding: 10px 16px; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--brand-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .topbar-inner { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .brand-box { display: flex; align-items: center; gap: 10px; }
+    .brand-badge { background: var(--brand-gold); color: #0f172a; font-weight: 900; padding: 6px 10px; border-radius: 10px; font-size: 0.9rem; font-family: 'Montserrat', sans-serif; }
+    .brand-title h1 { font-size: 1.05rem; color: #ffd800; font-weight: 900; letter-spacing: 0.3px; }
+    .brand-title p { font-size: 0.72rem; color: #cbd5e1; }
+    .top-cta-group { display: flex; gap: 8px; align-items: center; }
+    .btn-live-jump { background: linear-gradient(135deg, #fe2c55, #ea580c); color: #fff; border: 2px solid #ffd800; padding: 7px 14px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 6px; animation: pulseLive 1.4s infinite alternate; }
+    @keyframes pulseLive { from { transform: scale(1); box-shadow: 0 0 5px rgba(254,44,85,0.4); } to { transform: scale(1.04); box-shadow: 0 0 18px rgba(254,44,85,0.8); } }
+
+    /* HERO BANNER SHOWROOM */
+    .hero-banner { background: linear-gradient(135deg, rgba(15,23,42,0.88), rgba(30,41,59,0.82)), url('anhbia.jpg') center/cover no-repeat; color: #fff; padding: 36px 16px; text-align: center; border-bottom: 4px solid var(--yadea-orange); }
+    .hero-inner { max-width: 980px; margin: 0 auto; }
+    .dealer-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .dealer-tag { background: rgba(255,255,255,0.12); border: 1px solid #ffd800; color: #ffd800; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 800; }
+    .hero-inner h2 { font-size: 1.85rem; font-weight: 900; color: #ffffff; margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+    .hero-inner p { font-size: 0.95rem; color: #e2e8f0; margin-bottom: 18px; }
+    .branch-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; max-width: 780px; margin: 0 auto; }
+    .branch-card { background: rgba(15,23,42,0.85); border: 1.5px solid #ffd800; border-radius: 12px; padding: 10px 14px; text-align: left; font-size: 0.82rem; }
+    .branch-card b { color: #ffd800; font-size: 0.88rem; }
+
+    /* TRAM LIVESTREAM TIKTOK SAN SALE THEO KHUNG GIO CO DINH */
+    .live-arena-section { max-width: 1240px; margin: 20px auto; padding: 0 14px; }
+    .live-arena-box { background: linear-gradient(145deg, #0f172a, #1e1b4b); border: 3px solid var(--live-pink); border-radius: 20px; padding: 18px; color: #fff; box-shadow: 0 15px 35px rgba(254,44,85,0.18); }
+    .live-header-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; margin-bottom: 16px; }
+    .live-status-pill { background: var(--live-pink); color: #fff; padding: 5px 14px; border-radius: 20px; font-weight: 900; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; }
+    .live-schedule-timer { background: rgba(255,216,0,0.15); border: 1.5px solid #ffd800; color: #ffd800; padding: 6px 14px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; }
+
+    .live-grid-layout { display: grid; grid-template-columns: 1.05fr 1.25fr; gap: 18px; align-items: start; }
+    .tiktok-player-frame { background: #000; border-radius: 16px; overflow: hidden; border: 2px solid #334155; position: relative; min-height: 490px; display: flex; flex-direction: column; justify-content: space-between; }
+    .tiktok-embed-container { width: 100%; height: 430px; border: none; background: #090d16; }
+    .tiktok-channel-switcher { display: flex; gap: 6px; padding: 8px; background: #0f172a; border-bottom: 1px solid #1e293b; overflow-x: auto; }
+    .btn-channel-tab { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.76rem; cursor: pointer; white-space: nowrap; }
+    .btn-channel-tab.active { background: var(--live-pink); color: #fff; border-color: #fff; }
+
+    /* DANH SACH VOUCHER & DEAL SAN SALE TREN LIVE */
+    .live-deals-panel { display: flex; flex-direction: column; gap: 12px; }
+    .voucher-card { background: linear-gradient(135deg, #ffffff, #fffbeb); color: #0f172a; border-radius: 14px; padding: 14px; border-left: 6px solid var(--live-pink); display: flex; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .voucher-info h4 { color: #b91c1c; font-size: 1rem; font-weight: 900; }
+    .voucher-info p { font-size: 0.8rem; color: #475569; margin-top: 2px; }
+    .voucher-progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin-top: 6px; }
+    .voucher-progress-fill { height: 100%; background: linear-gradient(90deg, #fe2c55, #ea580c); }
+    .btn-claim-voucher { background: linear-gradient(135deg, #fe2c55, #ea580c); color: #fff; border: none; padding: 10px 14px; border-radius: 10px; font-weight: 900; font-size: 0.82rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 10px rgba(254,44,85,0.3); }
+    .btn-claim-voucher:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+
+    /* SHOWROOM XE DIEN & BO LOC DONG XE */
+    .catalog-section { max-width: 1240px; margin: 28px auto; padding: 0 14px; }
+    .filter-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; scrollbar-width: none; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-btn { background: #fff; border: 1.5px solid #cbd5e1; color: #334155; padding: 9px 16px; border-radius: 24px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .filter-btn.active { background: var(--primary); color: #ffd800; border-color: var(--primary); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
+
+    .vehicle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    .vehicle-card { background: #fff; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.2s; position: relative; }
+    .vehicle-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1); }
+    .veh-badge-brand { position: absolute; top: 12px; left: 12px; background: var(--primary); color: #ffd800; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 0.72rem; z-index: 2; }
+    .veh-badge-sale { position: absolute; top: 12px; right: 12px; background: var(--live-pink); color: #fff; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 0.74rem; z-index: 2; }
+    .veh-img-box { width: 100%; height: 215px; background: linear-gradient(180deg, #f1f5f9, #e2e8f0); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .veh-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    .veh-body { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .veh-title { font-size: 1.12rem; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+    .veh-price-row { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 10px; }
+    .veh-price-live { font-size: 1.3rem; font-weight: 900; color: #dc2626; }
+    .veh-price-old { font-size: 0.85rem; color: #94a3b8; text-decoration: line-through; font-weight: 600; }
+
+    /* CHON MAU SAC TRUC QUAN (COLOR SWATCHES) */
+    .color-picker-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #cbd5e1; cursor: pointer; transition: transform 0.15s; }
+    .color-dot.active { transform: scale(1.22); border-color: #0f172a; box-shadow: 0 0 0 2px #ffd800; }
+
+    /* 4 THONG SO KY THUAT TOM TAT TREN THE XE */
+    .specs-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #f8fafc; padding: 8px 10px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 0.76rem; margin-bottom: 12px; }
+    .specs-mini-item b { color: #0369a1; }
+
+    .veh-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; }
+    .btn-spec-detail { background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 0.8rem; cursor: pointer; }
+    .btn-buy-live { background: linear-gradient(135deg, #00b14f, #059669); color: #fff; border: none; padding: 10px; border-radius: 10px; font-weight: 900; font-size: 0.82rem; cursor: pointer; }
+
+    /* MODAL THONG SO KY THUAT CHI TIET & TINH TRA GOP */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 14px; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; border-radius: 20px; max-width: 560px; width: 100%; padding: 20px; max-height: 90vh; overflow-y: auto; position: relative; }
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 10px 0 16px; }
+    .spec-table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+    .spec-table td:first-child { font-weight: 700; color: #475569; width: 42%; background: #f8fafc; }
+    .spec-table td:last-child { font-weight: 800; color: #0f172a; }
+
+    @media (max-width: 820px) { .live-grid-layout { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="icon" type="image/png" href="Logo.jpg">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-box">
+        <span class="brand-badge">HỒNG VINH EV</span>
+        <div class="brand-title">
+          <h1>XE ĐIỆN - XE ĐẠP HỒNG VINH</h1>
+          <p>Đại lý YADEA &amp; DK Bike Phan Thiết • Hỗ Trợ Trả Góp</p>
+        </div>
+      </div>
+      <div class="top-cta-group">
+        <a href="#liveStreamArena" class="btn-live-jump">🔴 SĂN SALE TIKTOK LIVE</a>
+        <a href="tel:0849779039" style="background:#ffd800; color:#0f172a; padding:7px 12px; border-radius:20px; font-weight:900; font-size:0.8rem;">📞 0849.779.039</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BANNER -->
+  <section class="hero-banner">
+    <div class="hero-inner">
+      <div class="dealer-tags">
+        <span class="dealer-tag">⚡ ĐẠI LÝ CHÍNH HÃNG YADEA</span>
+        <span class="dealer-tag">🛵 ĐẠI LÝ DK BIKE PHAN THIẾT</span>
+        <span class="dealer-tag">💳 HỖ TRỢ TRẢ GÓP DUYỆT NHANH</span>
+        <span class="dealer-tag">🔋 THAY BÌNH &amp; SỬA CHỮA TẬN TÂM</span>
+      </div>
+      <h2>THẾ GIỚI XE MÁY ĐIỆN &amp; XE ĐẠP ĐIỆN HỒNG VINH</h2>
+      <p>Xem thông số kỹ thuật, phối màu thực tế &amp; Săn Voucher giảm giá trực tiếp trên sóng Livestream TikTok mỗi ngày!</p>
+      <div class="branch-cards">
+        <div class="branch-card">
+          <b>📍 CHI NHÁNH 1 (TIỆM HƯỜNG CŨ):</b><br>
+          05 Thủ Khoa Huân, P. Phan Thiết, Tỉnh Lâm Đồng<br>
+          📞 Hotline / Zalo: <a href="tel:0849779039" style="color:#4ade80; font-weight:900;">0849.779.039</a>
+        </div>
+        <div class="branch-card">
+          <b>📍 CHI NHÁNH 2:</b><br>
+          49 Phạm Ngọc Thạch, P. Phan Thiết, Tỉnh Lâm Đồng<br>
+          📞 Hotline / Zalo: <a href="tel:0916610619" style="color:#38bdf8; font-weight:900;">0916.610.619</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRẠM XEM LIVESTREAM TIKTOK & SĂN SALE KHUNG GIỜ CỐ ĐỊNH HẰNG NGÀY -->
+  <section id="liveStreamArena" class="live-arena-section">
+    <div class="live-arena-box">
+      <div class="live-header-bar">
+        <div>
+          <span class="live-status-pill" id="liveBadgeStatus">🔴 TRẠM LIVESTREAM SĂN SALE NHÀ PHÂN PHỐI</span>
+          <h3 style="font-size:1.25rem; color:#ffd800; margin-top:6px;" id="liveArenaTitle">Săn Deal Giảm Giá Xe Điện Theo Khung Giờ Cố Định Hằng Ngày</h3>
+        </div>
+        <div class="live-schedule-timer">
+          ⏰ Khung giờ vàng mỗi ngày: <b id="liveFixedScheduleText">11:30 - 13:30 &amp; 19:30 - 21:30</b><br>
+          ⏳ Trạng thái phiên: <span id="liveCountdownClock" style="color:#4ade80; font-weight:900;">ĐANG MỞ SĂN DEAL!</span>
+        </div>
+      </div>
+
+      <div class="live-grid-layout">
+        <!-- CỘT TRÁI: MÀN HÌNH XEM TIKTOK LIVE TRỰC TIẾP TRÊN APP -->
+        <div class="tiktok-player-frame">
+          <div class="tiktok-channel-switcher">
+            <button type="button" class="btn-channel-tab active" onclick="switchLiveChannel('yadeavietnam', 'Kênh NPP YADEA Việt Nam', this)">🔴 Live NPP YADEA</button>
+            <button type="button" class="btn-channel-tab" onclick="switchLiveChannel('dkbike.official', 'Kênh NPP DK Bike Chính Hãng', this)">🔵 Live NPP DK Bike</button>
+            <button type="button" class="btn-channel-tab" onclick="switchLiveChannel('xedienhongvinh', 'Kênh Đại Lý Hồng Vinh Phan Thiết', this)">🟡 Live Đại Lý Hồng Vinh</button>
+          </div>
+
+          <div id="tiktokLiveEmbedWrap" style="position:relative; flex:1; background:#090d16; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; text-align:center;">
+            <iframe id="tiktokLiveIframe" class="tiktok-embed-container" src="https://www.tiktok.com/embed/@yadeavietnam" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+          </div>
+
+          <div style="background:#0f172a; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; border-top:1px solid #334155;">
+            <span style="font-size:0.78rem; color:#cbd5e1;">Đang kết nối: <b id="currentChannelNameLabel" style="color:#ffd800;">Kênh NPP YADEA Việt Nam</b></span>
+            <button type="button" onclick="openTikTokLiveExternal()" style="background:#fe2c55; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-weight:800; font-size:0.76rem; cursor:pointer;">
+              📲 Mở Luồng Live Full Màn Hình + Giữ Mã Sale
+            </button>
+          </div>
+        </div>
+
+        <!-- CỘT PHẢI: KHO VOUCHER SĂN SALE THEO KHUNG GIỜ & CHỐT ĐƠN TRỰC TIẾP -->
+        <div class="live-deals-panel">
+          <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,216,0,0.4); border-radius:12px; padding:12px;">
+            <b style="color:#ffd800; font-size:0.92rem;">🎁 QUYỀN LỢI KHI SĂN MÃ TRÊN APP TRONG GIỜ LIVE:</b>
+            <p style="font-size:0.8rem; color:#e2e8f0; margin-top:4px;">
+              Khách bấm <b>"Lấy Mã Săn Sale"</b> bên dưới trong khung giờ Live của Nhà phân phối rồi nhận xe tại <b>Đại lý Hồng Vinh (05 Thủ Khoa Huân / 49 Phạm Ngọc Thạch)</b> sẽ được trừ thẳng tiền mặt vào giá xe + hưởng bảo hành chính hãng tại Phan Thiết!
+            </p>
+          </div>
+
+          <div id="liveVouchersContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+
+          <div id="activeVoucherBanner" style="display:none; background:#dcfce7; color:#166534; border:2px solid #16a34a; border-radius:12px; padding:12px; font-weight:800; font-size:0.86rem; text-align:center;">
+            🎉 Đã áp dụng mã <b id="appliedVoucherCodeText" style="color:#dc2626;"></b>! Hãy bấm chọn mẫu xe bên dưới để khóa giá ưu đãi!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DANH MỤC MẪU XE, MÀU SẮC & THÔNG SỐ KỸ THUẬT -->
+  <section class="catalog-section" id="showroomSection">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+      <div>
+        <h2 style="font-size:1.5rem; color:#0f172a;">🛵 SHOWROOM MẪU XE &amp; THÔNG SỐ KỸ THUẬT</h2>
+        <p style="font-size:0.85rem; color:#64748b;">Chạm vào các chấm màu trên từng mẫu xe để xem màu sắc và bấm xem Thông số kỹ thuật / Bảng tính trả góp</p>
+      </div>
+      <input type="search" id="vehSearchInput" placeholder="🔍 Tìm tên xe (VD: Yadea, DK Roma, Xmen, Xe đạp điện)..." oninput="renderVehiclesGrid()" style="padding:10px 14px; border:2px solid #0f172a; border-radius:24px; font-size:0.86rem; min-width:260px; font-weight:600;">
+    </div>
+
+    <div class="filter-bar" id="brandFilterBar">
+      <button type="button" class="filter-btn active" onclick="setVehicleFilter('all', this)">Tất Cả Dòng Xe</button>
+      <button type="button" class="filter-btn" onclick="setVehicleFilter('YADEA', this)">⚡ Xe Máy Điện YADEA</button>
+      <button type="button" class="filter-btn" onclick="setVehicleFilter('DKBIKE', this)">🔵 Xe Máy Điện DK Bike</button>
+      <button type="button" class="filter-btn" onclick="setVehicleFilter('EBICYCLE', this)">🚲 Xe Đạp Điện Học Sinh</button>
+      <button type="button" class="filter-btn" onclick="setVehicleFilter('BATTERY', this)">🔋 Thay Bình Ắc Quy &amp; Bảo Dưỡng</button>
+    </div>
+
+    <div class="vehicle-grid" id="vehiclesGridContainer"></div>
+  </section>
+
+  <!-- MODAL XEM THÔNG SỐ KỸ THUẬT CHI TIẾT & DỰ TOÁN TRẢ GÓP -->
+  <div id="specAndOrderModal" class="modal-overlay" onclick="if(event.target===this) closeSpecModal()">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:12px;">
+        <h3 id="modalVehName" style="font-size:1.18rem; color:#0f172a;">Thông Số Kỹ Thuật Xe</h3>
+        <button type="button" onclick="closeSpecModal()" style="background:#ef4444; color:#fff; border:none; padding:5px 10px; border-radius:8px; font-weight:800; cursor:pointer;">✖ Đóng</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#f8fafc; padding:10px 12px; border-radius:12px; margin-bottom:12px;">
+        <div>
+          <span style="font-size:0.78rem; color:#64748b; font-weight:700;">Màu đang chọn: <b id="modalSelectedColorName" style="color:#0f172a;">Đen Nhám</b></span>
+          <div id="modalColorDots" style="display:flex; gap:6px; margin-top:5px;"></div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:0.75rem; color:#64748b; font-weight:700;">Giá Săn Sale Trên App:</span><br>
+          <b id="modalFinalPrice" style="font-size:1.35rem; color:#dc2626;">0đ</b>
+        </div>
+      </div>
+
+      <h4 style="font-size:0.9rem; color:#0284c7; margin-bottom:4px;">⚙️ BẢNG THÔNG SỐ KỸ THUẬT CHI TIẾT:</h4>
+      <table class="spec-table" id="modalSpecTable"></table>
+
+      <!-- BẢNG TÍNH TRẢ GÓP TỰ ĐỘNG -->
+      <div style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:12px; padding:12px; margin-bottom:14px;">
+        <h4 style="font-size:0.9rem; color:#b45309; margin-bottom:8px;">💳 BẢNG TÍNH HỖ TRỢ TRẢ GÓP TẠI HỒNG VINH:</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div>
+            <label style="font-size:0.75rem; font-weight:700;">Mức trả trước:</label>
+            <select id="calcDownPaymentPct" onchange="recalcInstallmentPlan()" style="width:100%; padding:7px; border-radius:6px; border:1px solid #cbd5e1; font-weight:800;">
+              <option value="0">Trả trước 0đ (0%)</option>
+              <option value="20" selected>Trả trước 20%</option>
+              <option value="30">Trả trước 30%</option>
+              <option value="50">Trả trước 50%</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; font-weight:700;">Kỳ hạn góp:</label>
+            <select id="calcMonthsTerm" onchange="recalcInstallmentPlan()" style="width:100%; padding:7px; border-radius:6px; border:1px solid #cbd5e1; font-weight:800;">
+              <option value="6">6 Tháng</option>
+              <option value="9" selected>9 Tháng</option>
+              <option value="12">12 Tháng</option>
+            </select>
+          </div>
+        </div>
+        <div id="calcInstallmentResultText" style="font-size:0.84rem; font-weight:800; color:#166534; background:#dcfce7; padding:8px 10px; border-radius:8px; text-align:center;"></div>
+      </div>
+
+      <!-- FORM ĐẶT GIỮ XE SĂN SALE / ĐĂNG KÝ TRẢ GÓP -->
+      <form onsubmit="submitVehicleOrder(event)" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px;">
+        <h4 style="font-size:0.92rem; color:#0f172a; margin-bottom:8px;">🚀 ĐẶT GIỮ XE &amp; KÍCH HOẠT VOUCHER SĂN SALE:</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <input type="text" id="orderCusName" required placeholder="Họ tên của bạn (*)" style="padding:9px; border:1px solid #94a3b8; border-radius:8px; font-weight:700;">
+          <input type="tel" id="orderCusPhone" required placeholder="Số điện thoại Zalo (*)" style="padding:9px; border:1px solid #94a3b8; border-radius:8px; font-weight:700;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <select id="orderBranchSelect" style="padding:9px; border:1px solid #94a3b8; border-radius:8px; font-weight:700; background:#fff;">
+            <option value="CN1: 05 Thủ Khoa Huân (0849.779.039)">📍 Nhận tại CN1: 05 Thủ Khoa Huân</option>
+            <option value="CN2: 49 Phạm Ngọc Thạch (0916.610.619)">📍 Nhận tại CN2: 49 Phạm Ngọc Thạch</option>
+            <option value="Giao xe tận nhà tại Phan Thiết">🚚 Giao xe tận nhà tại Phan Thiết</option>
+          </select>
+          <select id="orderPayTypeSelect" style="padding:9px; border:1px solid #94a3b8; border-radius:8px; font-weight:700; background:#fff;">
+            <option value="Trả thẳng (Giữ mã Săn Sale Live)">💵 Mua thẳng (Áp mã Live)</option>
+            <option value="Đăng ký Hỗ trợ Trả Góp">💳 Đăng ký Mua Trả Góp</option>
+          </select>
+        </div>
+        <button type="submit" style="width:100%; padding:13px; background:linear-gradient(135deg,#fe2c55,#ea580c); color:#fff; border:none; border-radius:10px; font-weight:900; font-size:0.98rem; cursor:pointer;">
+          ⚡ XÁC NHẬN CHỐT DEAL &amp; GIỮ MÃ GIẢM GIÁ NGAY
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyB7CH4HUqEozclN38P_iGtSFzDB_w7sOUk", authDomain: "hy-chay.firebaseapp.com", projectId: "hy-chay", storageBucket: "hy-chay.firebasestorage.app", messagingSenderId: "215026977682", appId: "1:215026977682:web:52b136c7f09a62cc488f4b" };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app, "https://hy-chay-default-rtdb.asia-southeast1.firebasedatabase.app");
+
+    // 6 MÀU SẮC THỰC TẾ TRÍCH XUẤT TỪ ẢNH CỬA HÀNG HỒNG VINH (Logo.jpg)
+    const STANDARD_COLORS = [
+      { name: "Đen Nhám", hex: "#1e293b" },
+      { name: "Xám Titan", hex: "#64748b" },
+      { name: "Kem Sữa", hex: "#f5e6c8" },
+      { name: "Trắng Ngọc Trai", hex: "#ffffff" },
+      { name: "Xám Xi Măng", hex: "#94a3b8" },
+      { name: "Cam Thể Thao", hex: "#f97316" }
+    ];
+
+    const DEFAULT_VEHICLES = [
+      {
+        id: "yadea_ossy", brand: "YADEA", name: "YADEA Ossy / Orla Thông Minh",
+        oldPrice: 21990000, livePrice: 19990000, image: "Logo.jpg",
+        motor: "Động cơ YADEA TTFAR 1200W (Chống nước IPX7)",
+        battery: "Ắc quy Graphene TTFAR 60V - 22Ah",
+        range: "80 - 90 km / 1 lần sạc", maxSpeed: "50 km/h",
+        charging: "6 - 8 giờ (Tự ngắt khi đầy)", brakes: "Phanh đĩa trước, tang trống sau",
+        warranty: "Bảo hành chính hãng 24 tháng tại Hồng Vinh"
+      },
+      {
+        id: "yadea_ocean", brand: "YADEA", name: "YADEA Ocean / Odora S2",
+        oldPrice: 18500000, livePrice: 16800000, image: "anhbia.jpg",
+        motor: "Động cơ GTR 1000W độc quyền YADEA",
+        battery: "Ắc quy Graphene 60V - 20Ah siêu bền",
+        range: "75 - 85 km / 1 lần sạc", maxSpeed: "46 km/h",
+        charging: "6 - 7 giờ", brakes: "Phanh đĩa an toàn + Chống trộm từ xa",
+        warranty: "Bảo hành chính hãng 24 tháng tại Hồng Vinh"
+      },
+      {
+        id: "dk_roma_lite", brand: "DKBIKE", name: "DK Bike Roma Lite / Gogo New",
+        oldPrice: 19200000, livePrice: 17500000, image: "Logo.jpg",
+        motor: "Động cơ DK Liquid Cooled 1200W",
+        battery: "Ắc quy 60V - 20Ah chính hãng DK Bike",
+        range: "80 km / 1 lần sạc", maxSpeed: "50 km/h",
+        charging: "6 - 8 giờ", brakes: "Phanh đĩa thủy lực trước & sau",
+        warranty: "Bảo hành khung sườn 36 tháng"
+      },
+      {
+        id: "dk_xmen_one", brand: "DKBIKE", name: "DK Bike Xman One Thể Thao",
+        oldPrice: 17900000, livePrice: 16200000, image: "anhbia.jpg",
+        motor: "Động cơ 1200W leo dốc khỏe",
+        battery: "5 Bình Ắc quy lớn 60V - 20Ah",
+        range: "75 - 80 km / 1 lần sạc", maxSpeed: "50 km/h",
+        charging: "7 giờ", brakes: "Phanh đĩa thể thao + Giảm xóc đôi",
+        warranty: "Bảo hành chính hãng 24 tháng"
+      },
+      {
+        id: "ebike_m133", brand: "EBICYCLE", name: "Xe Đạp Điện M133 / Nijia Học Sinh",
+        oldPrice: 10500000, livePrice: 9200000, image: "Logo.jpg",
+        motor: "Động cơ 450W - Không cần bằng lái",
+        battery: "4 Bình Ắc quy 48V - 12Ah/20Ah",
+        range: "45 - 55 km / 1 lần sạc", maxSpeed: "35 km/h",
+        charging: "5 - 6 giờ", brakes: "Phanh cơ an toàn, sàn để chân rộng",
+        warranty: "Bảo hành 12 tháng tại 2 chi nhánh Hồng Vinh"
+      },
+      {
+        id: "battery_combo", brand: "BATTERY", name: "Combo Thay Bộ Bình Ắc Quy Xe Điện Mới 100%",
+        oldPrice: 2450000, livePrice: 1950000, image: "anhbia.jpg",
+        motor: "Hỗ trợ mọi dòng xe YADEA, DK Bike, Pega, VinFast",
+        battery: "Bộ 4 bình hoặc 5 bình 12V-12Ah / 12V-20Ah Date mới nhất",
+        range: "Phục hồi 100% quãng đường như xe mới", maxSpeed: "Thay tận nơi tại Phan Thiết",
+        charging: "Miễn phí công thay & kiểm tra sạc", brakes: "Thu bình cũ đổi bình mới trợ giá cao",
+        warranty: "Bảo hành 1 đổi 1 lên đến 12 tháng"
+      }
+    ];
+
+    const DEFAULT_VOUCHERS = [
+      { code: "LIVE1TR5", title: "Giảm Ngay 1.500.000đ Khi Mua Xe Máy Điện YADEA / DK Bike", desc: "Áp dụng khi chốt trong khung giờ Live + Tặng Nón bảo hiểm & Áo mưa", discountAmt: 1500000, remaining: 5, total: 10 },
+      { code: "LIVESINHVIEN", title: "Voucher Học Sinh - Sinh Viên Giảm 800.000đ + Trả Góp 0đ", desc: "Áp dụng cho toàn bộ Xe Đạp Điện & Xe Máy Điện tại 2 Chi Nhánh", discountAmt: 800000, remaining: 8, total: 15 },
+      { code: "THAYBINHLIVE", title: "Trợ Giá 300.000đ Khi Thay Bộ Bình Ắc Quy Mới Trên Live", desc: "Miễn phí công lắp đặt tại 05 Thủ Khoa Huân & 49 Phạm Ngọc Thạch", discountAmt: 300000, remaining: 12, total: 20 }
+    ];
+
+    let vehiclesData = [...DEFAULT_VEHICLES];
+    let vouchersData = [...DEFAULT_VOUCHERS];
+    let currentFilter = 'all';
+    let selectedColorsMap = {};
+    let activeVoucher = null;
+    let currentModalVehicle = null;
+    let currentTikTokHandle = 'yadeavietnam';
+
+    onValue(ref(db, 'hong_vinh_ev/custom_vehicles'), (snap) => {
+      if (snap.exists()) {
+        const customObj = snap.val();
+        vehiclesData = [...DEFAULT_VEHICLES, ...Object.values(customObj)];
+      }
+      window.renderVehiclesGrid();
+    });
+
+    onValue(ref(db, 'hong_vinh_ev/live_config'), (snap) => {
+      if (snap.exists()) {
+        const cfg = snap.val();
+        if (cfg.scheduleText) document.getElementById('liveFixedScheduleText').innerText = cfg.scheduleText;
+        if (cfg.title) document.getElementById('liveArenaTitle').innerText = cfg.title;
+      }
+    });
+
+    window.switchLiveChannel = function(handle, label, btn) {
+      currentTikTokHandle = handle;
+      document.querySelectorAll('.btn-channel-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      document.getElementById('currentChannelNameLabel').innerText = label;
+      document.getElementById('tiktokLiveIframe').src = `https://www.tiktok.com/embed/@${handle}`;
+    };
+
+    window.openTikTokLiveExternal = function() {
+      window.open(`https://www.tiktok.com/@${currentTikTokHandle}/live`, '_blank');
+    };
+
+    function renderLiveVouchers() {
+      const box = document.getElementById('liveVouchersContainer');
+      if (!box) return;
+      box.innerHTML = vouchersData.map(v => {
+        const pct = Math.round((v.remaining / v.total) * 100);
+        const isSelected = activeVoucher && activeVoucher.code === v.code;
+        return `
+          <div class="voucher-card">
+            <div class="voucher-info" style="flex:1;">
+              <span style="background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:6px; font-weight:900; font-size:0.72rem;">MÃ: ${v.code}</span>
+              <h4 style="margin-top:4px;">${v.title}</h4>
+              <p>${v.desc}</p>
+              <div class="voucher-progress-bar"><div class="voucher-progress-fill" style="width:${pct}%;"></div></div>
+              <small style="color:#dc2626; font-weight:800; font-size:0.72rem;">🔥 Chỉ còn ${v.remaining}/${v.total} suất trong khung giờ Live hôm nay</small>
+            </div>
+            <button type="button" class="btn-claim-voucher" onclick="claimLiveVoucher('${v.code}')">
+              ${isSelected ? '✅ ĐÃ LẤY MÃ' : '⚡ LẤY MÃ NGAY'}
+            </button>
+          </div>`;
+      }).join('');
+    }
+
+    window.claimLiveVoucher = function(code) {
+      const found = vouchersData.find(v => v.code === code);
+      if (!found) return;
+      activeVoucher = found;
+      const banner = document.getElementById('activeVoucherBanner');
+      const txt = document.getElementById('appliedVoucherCodeText');
+      if (banner && txt) {
+        banner.style.display = 'block';
+        txt.innerText = `${found.code} (-${found.discountAmt.toLocaleString()}đ)`;
+      }
+      renderLiveVouchers();
+      window.renderVehiclesGrid();
+    };
+
+    window.setVehicleFilter = function(brand, btn) {
+      currentFilter = brand;
+      document.querySelectorAll('#brandFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      window.renderVehiclesGrid();
+    };
+
+    window.selectVehicleColor = function(vehId, colorName) {
+      selectedColorsMap[vehId] = colorName;
+      window.renderVehiclesGrid();
+      if (currentModalVehicle && currentModalVehicle.id === vehId) {
+        document.getElementById('modalSelectedColorName').innerText = colorName;
+      }
+    };
+
+    window.renderVehiclesGrid = function() {
+      const container = document.getElementById('vehiclesGridContainer');
+      if (!container) return;
+      const kw = (document.getElementById('vehSearchInput')?.value || '').toLowerCase().trim();
+
+      const filtered = vehiclesData.filter(v => {
+        if (currentFilter !== 'all' && v.brand !== currentFilter) return false;
+        if (kw && !v.name.toLowerCase().includes(kw) && !v.brand.toLowerCase().includes(kw)) return false;
+        return true;
+      });
+
+      container.innerHTML = filtered.map(v => {
+        const chosenColor = selectedColorsMap[v.id] || STANDARD_COLORS[0].name;
+        const extraVoucherOff = activeVoucher ? Math.min(activeVoucher.discountAmt, Math.round(v.livePrice * 0.12)) : 0;
+        const finalPrice = Math.max(0, v.livePrice - extraVoucherOff);
+        const totalSaved = v.oldPrice - finalPrice;
+
+        const colorDotsHtml = STANDARD_COLORS.map(c => `
+          <span class="color-dot ${chosenColor === c.name ? 'active' : ''}" style="background:${c.hex};" title="${c.name}" onclick="selectVehicleColor('${v.id}', '${c.name}')"></span>
+        `).join('');
+
+        return `
+          <div class="vehicle-card">
+            <span class="veh-badge-brand">${v.brand}</span>
+            <span class="veh-badge-sale">🔥 Giảm ${totalSaved.toLocaleString()}đ</span>
+            <div class="veh-img-box">
+              <img src="${v.image}" alt="${v.name}" onerror="this.src='Logo.jpg'">
+            </div>
+            <div class="veh-body">
+              <div>
+                <h3 class="veh-title">${v.name}</h3>
+                <div class="veh-price-row">
+                  <span class="veh-price-live">${finalPrice.toLocaleString()}đ</span>
+                  <span class="veh-price-old">${v.oldPrice.toLocaleString()}đ</span>
+                </div>
+                <div class="color-picker-row">
+                  <span style="font-size:0.74rem; font-weight:700; color:#475569;">Màu (<b>${chosenColor}</b>):</span>
+                  ${colorDotsHtml}
+                </div>
+                <div class="specs-mini-grid">
+                  <div class="specs-mini-item">⚡ <b>Động cơ:</b><br>${v.motor.split('(')[0]}</div>
+                  <div class="specs-mini-item">🔋 <b>Ắc quy/Pin:</b><br>${v.battery}</div>
+                  <div class="specs-mini-item">🛣️ <b>Quãng đường:</b><br>${v.range}</div>
+                  <div class="specs-mini-item">🚀 <b>Vận tốc:</b><br>${v.maxSpeed}</div>
+                </div>
+              </div>
+              <div class="veh-actions">
+                <button type="button" class="btn-spec-detail" onclick="openSpecModal('${v.id}')">📋 Thông Số &amp; Góp</button>
+                <button type="button" class="btn-buy-live" onclick="openSpecModal('${v.id}')">⚡ Chốt Giá Live</button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    };
+
+    window.openSpecModal = function(vehId) {
+      const v = vehiclesData.find(x => x.id === vehId);
+      if (!v) return;
+      currentModalVehicle = v;
+      const chosenColor = selectedColorsMap[v.id] || STANDARD_COLORS[0].name;
+      const extraVoucherOff = activeVoucher ? Math.min(activeVoucher.discountAmt, Math.round(v.livePrice * 0.12)) : 0;
+      const finalPrice = Math.max(0, v.livePrice - extraVoucherOff);
+
+      document.getElementById('modalVehName').innerText = v.name;
+      document.getElementById('modalSelectedColorName').innerText = chosenColor;
+      document.getElementById('modalFinalPrice').innerText = finalPrice.toLocaleString() + 'đ';
+
+      document.getElementById('modalColorDots').innerHTML = STANDARD_COLORS.map(c => `
+        <span class="color-dot ${chosenColor === c.name ? 'active' : ''}" style="background:${c.hex};" onclick="selectVehicleColor('${v.id}', '${c.name}')"></span>
+      `).join('');
+
+      document.getElementById('modalSpecTable').innerHTML = `
+        <tr><td>Hãng phân phối</td><td>${v.brand} Chính Hãng (Đại lý Hồng Vinh)</td></tr>
+        <tr><td>Động cơ</td><td>${v.motor}</td></tr>
+        <tr><td>Ắc quy / Pin</td><td>${v.battery}</td></tr>
+        <tr><td>Quãng đường 1 lần sạc</td><td>${v.range}</td></tr>
+        <tr><td>Vận tốc tối đa</td><td>${v.maxSpeed}</td></tr>
+        <tr><td>Thời gian sạc</td><td>${v.charging}</td></tr>
+        <tr><td>Hệ thống phanh &amp; An toàn</td><td>${v.brakes}</td></tr>
+        <tr><td>Chế độ bảo hành</td><td>${v.warranty}</td></tr>
+      `;
+
+      window.recalcInstallmentPlan();
+      document.getElementById('specAndOrderModal').classList.add('active');
+    };
+
+    window.closeSpecModal = function() {
+      document.getElementById('specAndOrderModal').classList.remove('active');
+    };
+
+    window.recalcInstallmentPlan = function() {
+      if (!currentModalVehicle) return;
+      const extraVoucherOff = activeVoucher ? Math.min(activeVoucher.discountAmt, Math.round(currentModalVehicle.livePrice * 0.12)) : 0;
+      const finalPrice = Math.max(0, currentModalVehicle.livePrice - extraVoucherOff);
+      const downPct = parseInt(document.getElementById('calcDownPaymentPct')?.value || '20');
+      const months = parseInt(document.getElementById('calcMonthsTerm')?.value || '9');
+      const downAmt = Math.round(finalPrice * downPct / 100);
+      const loanAmt = finalPrice - downAmt;
+      const monthlyPay = Math.round((loanAmt / months) + (loanAmt * 0.013));
+      document.getElementById('calcInstallmentResultText').innerHTML = `
+        👉 Trả trước: <b>${downAmt.toLocaleString()}đ</b> | Góp mỗi tháng: <b style="color:#dc2626; font-size:0.98rem;">~${monthlyPay.toLocaleString()}đ / tháng</b> (trong ${months} tháng)
+      `;
+    };
+
+    window.submitVehicleOrder = function(e) {
+      e.preventDefault();
+      if (!currentModalVehicle) return;
+      const name = document.getElementById('orderCusName').value.trim();
+      const phone = document.getElementById('orderCusPhone').value.trim();
+      const branch = document.getElementById('orderBranchSelect').value;
+      const payType = document.getElementById('orderPayTypeSelect').value;
+      const chosenColor = selectedColorsMap[currentModalVehicle.id] || STANDARD_COLORS[0].name;
+      const extraVoucherOff = activeVoucher ? Math.min(activeVoucher.discountAmt, Math.round(currentModalVehicle.livePrice * 0.12)) : 0;
+      const finalPrice = Math.max(0, currentModalVehicle.livePrice - extraVoucherOff);
+
+      const orderPayload = {
+        customerName: name,
+        phone: phone,
+        vehicleId: currentModalVehicle.id,
+        vehicleName: currentModalVehicle.name,
+        color: chosenColor,
+        finalPrice: finalPrice,
+        voucherCode: activeVoucher ? activeVoucher.code : 'GIÁ LIVE TRỰC TIẾP',
+        branch: branch,
+        payType: payType,
+        status: 'Chờ đại lý liên hệ',
+        createdAt: new Date().toISOString()
+      };
+
+      push(ref(db, 'hong_vinh_ev/orders'), orderPayload).then(() => {
+        alert(`🎉 ĐẶT GIỮ XE & MÃ SĂN SALE THÀNH CÔNG!\n\n• Mẫu xe: ${currentModalVehicle.name} (Màu: ${chosenColor})\n• Giá ưu đãi đã khóa: ${finalPrice.toLocaleString()}đ\n• Nhận xe tại: ${branch}\n\nĐại lý Hồng Vinh sẽ gọi xác nhận ngay cho bạn qua số ${phone}!`);
+        window.closeSpecModal();
+      });
+    };
+
+    renderLiveVouchers();
+    window.renderVehiclesGrid();
+  </script>
+</body>
+</html>
