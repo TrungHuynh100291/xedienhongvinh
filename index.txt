@@ -1295,5 +1295,9 @@
     renderSmartLiveStage();
     window.renderVehiclesGrid();
   </script>
+<!-- BE BAL AI AUTO-INJECTED FEATURE (20261031_131418) -->
+<div id="balAiInjectedWidget_20261031_131418" style="position:fixed; bottom:88px; right:14px; z-index:2800; background:linear-gradient(135deg,#d70018,#ff5722); color:#fff; padding:10px 16px; border-radius:30px; border:2px solid #ffd800; box-shadow:0 8px 25px rgba(215,0,24,0.45); font-weight:900; font-size:0.82rem; display:flex; align-items:center; gap:8px; cursor:pointer; animation:pulseLive 1.2s infinite alternate;" onclick="window.open('https://zalo.me/0849779039','_blank')">
+  <span>✨</span> <span>Nút Tư Vấn Trả Góp Zalo Nhấp Nháy vào trang Hồng Vinh (Chat Zalo 0849.779.039)</span>
+</div>
 </body>
 </html>
